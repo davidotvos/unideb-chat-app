@@ -1,0 +1,9 @@
+html,
+body {
+  height: 100%
+}
+
+.muted {
+font-size: 10px;
+color: darkgray;
+}
