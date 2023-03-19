@@ -15,6 +15,7 @@
     </button>
   </div>
 </div>
+
 <script type="text/javascript">
   var socketio = io();
 
@@ -22,13 +23,14 @@
 
   const createMessage = (name, msg) => {
     const content = `
-    <div class="text">
-        <span>
+    <div class="text ">
+        <span class="border border-primary rounded-circle">
             <strong>${name}</strong>: ${msg}
-        </span>
-        <span class="muted">
+            <span class="muted">
             ${new Date().toLocaleString()}
+            </span>
         </span>
+        
     </div>
     `;
     messages.innerHTML += content;

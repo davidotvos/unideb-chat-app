@@ -8,32 +8,37 @@ integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5
 </script>
 
     <form method="post" class="postMethod">
-    <h3 class="text-center fs-1 fw-bold">Unideb messenger</h3>
-    <div class="d-flex flex-column justify-content-center align-items-center">
-
-        <div class="d-inline-flex p-2">
-            <input
-            type="text"
-            placeholder="Pick a name!"
-            name="name"
-            value="{{name}}"
-            /></div>
-
-    <div class="d-inline-flex p-2"><input type="text" placeholder="Room Code" name="code" value="{{code}}" /></div>
-
-    <div class="d-inline-flex p-2"><button type="submit" name="join" class="btn btn-primary">Join a Room</button></div>
     
-    <div class="d-inline-flex p-2"><button type="submit" name="create" class="btn btn-primary">Create a Room</button></div>
-    <div class="d-inline-flex p-2">
-        {% if error %}
-        <ul>
-            <li>{{error}}</li>
-        </ul>
-        {% endif %}
+    
+    <div class="container">
+        <div class="d-flex flex-column justify-content-center align-items-center">
+
+            <div class="d-inline-flex p-2"> <h3 class="text-center fs-1 fw-bold">Unideb messenger</h3> </div>
+            
+            <div class="d-inline-flex p-2">
+                <input
+                type="text"
+                placeholder="Pick a name!"
+                name="name"
+                value="{{name}}"
+                /></div>
+
+            <div class="d-inline-flex p-2"><input type="text" placeholder="Room Code" name="code" value="{{code}}" /></div>
+
+            <div class="d-inline-flex p-2"><button type="submit" name="join" class="btn btn-primary">Join a Room</button></div>
+            
+            <div class="d-inline-flex p-2"><button type="submit" name="create" class="btn btn-primary">Create a Room</button></div>
+            
+            <div class="d-inline-flex p-2">
+                {% if error %}
+                <ul>
+                    <li>{{error}}</li>
+                </ul>
+                {% endif %}
+            </div>
+            
+        </div>
     </div>
-        
-    </div>
-  
     </form>
         
 {% endblock %}
