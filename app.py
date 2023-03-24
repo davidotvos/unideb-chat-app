@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for
-from flask_socketio import join_room, leave_room, send, SocketIO
+from flask_socketio import join_room, leave_room, send, SocketIO, emit
 import random
 from string import ascii_uppercase
 
@@ -72,11 +72,27 @@ def message(data):
     
     content = {
         "name": session.get("name"),
-        "message": data["data"]
+        "message": data["data"],
+        "type" : "text"
     }
     send(content, to=room)
     rooms[room]["messages"].append(content)
     print(f"{session.get('name')} said: {data['data']}")
+
+@socketio.on("image")
+def imageUpload(image):
+    room = session.get("room")
+    if room not in rooms:
+        return
+    
+    content = {
+        "name": session.get("name"),
+        "message": image,
+        "type" : "img"
+    }
+
+    rooms[room]["messages"].append(content)
+    emit('image', content, to=room)
 
 
 @socketio.on("connect")

@@ -1,6 +1,7 @@
 {% extends 'base.html' %} {% block content %}
-<div class="message-box">
-  <h2>Chat Room: {{code}}</h2>
+<div class="jumbotron vertical-center">
+<div class="container message-box">
+  <h2 class="text-center border-bottom">Chat Room: {{code}}</h2>
   <div class="messages" id="messages"></div>
   <div class="inputs">
     <input
@@ -10,25 +11,39 @@
       name="message"
       id="message"
     />
+    <input type="file" id="image" accept="image/*">
     <button type="button" name="send" id="send-btn" onClick="sendMessage()">
       Send
     </button>
   </div>
 </div>
-
+</div>
 <script type="text/javascript">
   var socketio = io();
 
   const messages = document.getElementById("messages");
 
+  let imageInput = document.getElementById('image');
+  
+  
+  imageInput.addEventListener('change', (e) => {
+    let file = imageInput.files[0]
+    let reader = new FileReader()
+    reader.addEventListener('load', () => {
+      socketio.emit('image', reader.result)
+    })
+    reader.readAsDataURL(file)
+  })
+
+
   const createMessage = (name, msg) => {
     const content = `
-    <div class="text ">
-        <span class="border border-primary rounded-circle">
+    <div class="text">
+        <span>
             <strong>${name}</strong>: ${msg}
-            <span class="muted">
-            ${new Date().toLocaleString()}
-            </span>
+          </span>
+        <span class="muted">
+            ${new Date().toLocaleString()}    
         </span>
         
     </div>
@@ -36,9 +51,35 @@
     messages.innerHTML += content;
   };
 
+  const createImage = (name, img) => {
+    const content = `
+    <div class="text">
+        <span>
+            <strong>${name}</strong>:
+            <img src="${img}" width="300" height="300">
+          </span>
+        <span class="muted">
+            ${new Date().toLocaleString()}    
+        </span>
+    </div>
+    `;
+    messages.innerHTML += content;
+    imageInput.value = null;
+  };
+
+
+
+
+  
   socketio.on("message", (data) => {
     createMessage(data.name, data.message);
   });
+
+
+  socketio.on('image', (image_data) =>{
+    createImage(image_data.name, image_data.message)
+  });
+
 
   const sendMessage = () => {
     const message = document.getElementById("message");
@@ -48,7 +89,13 @@
   };
 </script>
 {% for msg in messages %}
+{% if msg.type == "text" %}
 <script type="text/javascript">
   createMessage("{{msg.name}}", "{{msg.message}}");
 </script>
+{% else %}
+<script type="text/javascript">
+  createImage("{{msg.name}}", "{{msg.message}}");
+</script>
+{% endif %}
 {% endfor %} {% endblock %}
