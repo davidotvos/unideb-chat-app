@@ -24,6 +24,18 @@
   const messages = document.getElementById("messages");
 
   let imageInput = document.getElementById('image');
+
+  let input = document.getElementById("message");
+
+  input.addEventListener("keypress", function(event) {
+  // If the user presses the "Enter" key on the keyboard
+  if (event.key === "Enter") {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    document.getElementById("send-btn").click();
+  }
+});
   
   
   imageInput.addEventListener('change', (e) => {
@@ -39,9 +51,10 @@
   const createMessage = (name, msg) => {
     const content = `
     <div class="text">
-        <span>
-            <strong>${name}</strong>: ${msg}
-          </span>
+        <span class = "message-bubble">
+            <strong>${name}</strong>: 
+            <span>${msg}</span>
+        </span>
         <span class="muted">
             ${new Date().toLocaleString()}    
         </span>
@@ -54,9 +67,9 @@
   const createImage = (name, img) => {
     const content = `
     <div class="text">
-        <span>
+        <span class="message-bubble">
             <strong>${name}</strong>:
-            <img src="${img}" width="300" height="300">
+            <span><img src="${img}" width="300" height="300"></span>
           </span>
         <span class="muted">
             ${new Date().toLocaleString()}    
@@ -66,10 +79,6 @@
     messages.innerHTML += content;
     imageInput.value = null;
   };
-
-
-
-
   
   socketio.on("message", (data) => {
     createMessage(data.name, data.message);

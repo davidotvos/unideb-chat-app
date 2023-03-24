@@ -8,6 +8,22 @@ body {
   gap: 10px
 }
 
+.from-me {
+  position: relative;
+  padding: 10px 20px;
+  color: white;
+  background: #0B93F6;
+  border-radius: 25px;
+}
+
+.from-them {
+  position: relative;
+  padding: 10px 20px;
+  background: #E5E5EA;
+  border-radius: 25px;
+  color: black;
+}
+
 .vertical-center {
   min-height: 80%;  /* Fallback for browsers do NOT support vh unit */
   min-height: 80vh; /* These two lines are counted as one :-)       */
@@ -51,6 +67,7 @@ body {
   justify-content: space-between;
   padding-left: 10px;
   padding-right: 10px;
+  margin: 10px;
 }
 
 .muted{
