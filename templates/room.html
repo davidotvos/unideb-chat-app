@@ -1,22 +1,20 @@
 {% extends 'base.html' %} {% block content %}
 <div class="jumbotron vertical-center">
-<div class="container message-box">
-  <h2 class="text-center border-bottom">Chat Room: {{code}}</h2>
-  <div class="messages" id="messages"></div>
-  <div class="inputs">
-    <input
-      type="text"
-      rows="3"
-      placeholder="Message"
-      name="message"
-      id="message"
-    />
-    <input type="file" id="image" accept="image/*">
-    <button type="button" name="send" id="send-btn" onClick="sendMessage()">
-      Send
-    </button>
+  <div class="container message-box">
+    <div class="d-flex justify-content-between align-items-center border-bottom">
+      <span id="hidden-left">Left</span>
+      <span><h2 class="text-center align-items-center">Chat Room: {{code}}</h2></span>
+      <span><button type="button" name="exit" id="exit-room-btn" class="align-self-end btn-primary btn" onclick="location.href='/'">Exit</button></span>
+    </div>
+    <div class="messages" id="messages"></div>
+    <div class="inputs align-items-center">
+      <input type="text" rows="3" placeholder="Message" name="message" id="message" />
+      <input type="file" id="image" accept="image/*">
+      <button class="btn btn-primary"type="button" name="send" id="send-btn" onClick="sendMessage()">
+        Send
+      </button>
+    </div>
   </div>
-</div>
 </div>
 <script type="text/javascript">
   var socketio = io();
@@ -27,17 +25,17 @@
 
   let input = document.getElementById("message");
 
-  input.addEventListener("keypress", function(event) {
-  // If the user presses the "Enter" key on the keyboard
-  if (event.key === "Enter") {
-    // Cancel the default action, if needed
-    event.preventDefault();
-    // Trigger the button element with a click
-    document.getElementById("send-btn").click();
-  }
-});
-  
-  
+  input.addEventListener("keypress", function (event) {
+    // If the user presses the "Enter" key on the keyboard
+    if (event.key === "Enter") {
+      // Cancel the default action, if needed
+      event.preventDefault();
+      // Trigger the button element with a click
+      document.getElementById("send-btn").click();
+    }
+  });
+
+
   imageInput.addEventListener('change', (e) => {
     let file = imageInput.files[0]
     let reader = new FileReader()
@@ -62,6 +60,13 @@
     </div>
     `;
     messages.innerHTML += content;
+
+    shouldScroll = messages.scrollTop + messages.clientHeight === messages.scrollHeight;
+
+    if (!shouldScroll) {
+      messages.scrollTop = messages.scrollHeight;
+    }
+
   };
 
   const createImage = (name, img) => {
@@ -78,14 +83,21 @@
     `;
     messages.innerHTML += content;
     imageInput.value = null;
+
+    shouldScroll = messages.scrollTop + messages.clientHeight === messages.scrollHeight;
+
+    if (!shouldScroll) {
+      messages.scrollTop = messages.scrollHeight;
+    }
+
   };
-  
+
   socketio.on("message", (data) => {
     createMessage(data.name, data.message);
   });
 
 
-  socketio.on('image', (image_data) =>{
+  socketio.on('image', (image_data) => {
     createImage(image_data.name, image_data.message)
   });
 
@@ -96,6 +108,7 @@
     socketio.emit("message", { data: message.value });
     message.value = "";
   };
+
 </script>
 {% for msg in messages %}
 {% if msg.type == "text" %}

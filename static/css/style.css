@@ -8,7 +8,7 @@ body {
   gap: 10px
 }
 
-.from-me {
+.message-bubble {
   position: relative;
   padding: 10px 20px;
   color: white;
@@ -73,4 +73,8 @@ body {
 .muted{
   font-size: 10px;
   color: darkgray;
+}
+
+#hidden-left{
+  opacity: 0;
 }
