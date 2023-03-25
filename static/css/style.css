@@ -78,3 +78,7 @@ body {
 #hidden-left{
   opacity: 0;
 }
+
+#chat-app-title{
+  font-family: 'Montserrat', sans-serif;
+}
